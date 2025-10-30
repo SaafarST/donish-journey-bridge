@@ -33,6 +33,7 @@ const Index = () => {
   const getLanguageLabel = (lang: SourceLanguage) => {
     const labels = {
       english: "English",
+      spanish: "Spanish",
       russian: "Russian",
       chinese: "Chinese"
     };
@@ -55,6 +56,7 @@ const Index = () => {
     // Demo translation - will be replaced with real API
     const demoTranslations: Record<SourceLanguage, string> = {
       english: `Тарчумаи матн аз забони англисӣ: "${inputText}"`,
+      spanish: `Тарчумаи матн аз забони испанӣ: "${inputText}"`,
       russian: `Тарчумаи матн аз забони русӣ: "${inputText}"`,
       chinese: `Тарчумаи матн аз забони хитоӣ: "${inputText}"`
     };
@@ -139,7 +141,7 @@ const Index = () => {
                   Тарчумон - Your Language Bridge
                 </p>
                 <p className="text-sm text-primary-foreground/60 mt-2">
-                  English • Russian • Chinese → Tajik
+                  English • Spanish • Russian • Chinese → Tajik
                 </p>
               </div>
 

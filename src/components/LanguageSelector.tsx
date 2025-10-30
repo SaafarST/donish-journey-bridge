@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-export type SourceLanguage = "english" | "russian" | "chinese";
+export type SourceLanguage = "english" | "russian" | "chinese" | "spanish";
 
 interface LanguageSelectorProps {
   selected: SourceLanguage;
@@ -15,6 +15,13 @@ const languages = [
     nativeLabel: "English",
     flag: "🇬🇧",
     gradient: "from-blue-500 to-red-500"
+  },
+  { 
+    id: "spanish" as const, 
+    label: "Spanish",
+    nativeLabel: "Español",
+    flag: "🇪🇸",
+    gradient: "from-red-600 to-yellow-400"
   },
   { 
     id: "russian" as const, 
