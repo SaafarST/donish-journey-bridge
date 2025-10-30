@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Send } from "lucide-react";
 import { MicrophoneInput } from "@/components/MicrophoneInput";
-import { PersonalitySelector, Personality } from "@/components/PersonalitySelector";
-import { ProgressiveAnswer } from "@/components/ProgressiveAnswer";
-import { KnowledgeJourney } from "@/components/KnowledgeJourney";
-import { Input } from "@/components/ui/input";
+import { LanguageSelector, SourceLanguage } from "@/components/LanguageSelector";
+import { TranslationResult } from "@/components/TranslationResult";
+import { TranslationHistory } from "@/components/TranslationHistory";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -12,93 +12,105 @@ import pamirHero from "@/assets/pamir-hero.jpg";
 
 const Index = () => {
   const [isListening, setIsListening] = useState(false);
-  const [personality, setPersonality] = useState<Personality>("friend");
+  const [sourceLanguage, setSourceLanguage] = useState<SourceLanguage>("english");
   const [inputText, setInputText] = useState("");
-  const [hasAsked, setHasAsked] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState("");
-  const [journeyNodes, setJourneyNodes] = useState<Array<{ id: string; question: string; isActive: boolean }>>([]);
+  const [hasTranslated, setHasTranslated] = useState(false);
+  const [currentTranslation, setCurrentTranslation] = useState({
+    sourceText: "",
+    translatedText: "",
+    sourceLanguage: ""
+  });
+  const [translationHistory, setTranslationHistory] = useState<Array<{
+    id: string;
+    sourceText: string;
+    translatedText: string;
+    sourceLanguage: string;
+    timestamp: number;
+    isActive: boolean;
+  }>>([]);
 
-  // Demo answer data - will be replaced with real AI in next iteration
-  const demoAnswer = {
-    levels: [
-      {
-        level: 1,
-        title: "The Tweet (Core Answer)",
-        content: "Inflation means your money buys less over time. Prices go up, purchasing power goes down."
-      },
-      {
-        level: 2,
-        title: "The Explanation",
-        content: "Inflation happens when there's more money in circulation but the same amount of goods. Think of it like a crowded bazaar - when everyone has more money to spend but there's the same amount of bread, the baker raises prices because people will pay more."
-      },
-      {
-        level: 3,
-        title: "The Deep Dive",
-        content: "In Tajikistan, inflation is influenced by several factors: import prices (especially from Russia and China), domestic agricultural production, energy costs, and the somoni exchange rate. The National Bank of Tajikistan manages monetary policy to keep inflation stable, targeting around 6% annually. Recent global events have impacted food and fuel prices significantly."
-      },
-      {
-        level: 4,
-        title: "The Sources",
-        content: "For specific current data and deeper analysis, here are trusted sources that provide regular updates on Tajikistan's economic indicators and inflation trends."
-      }
-    ],
-    sources: [
-      { title: "National Bank of Tajikistan - Monetary Policy Reports", url: "https://www.nbt.tj" },
-      { title: "Asian Development Bank - Tajikistan Economic Updates", url: "https://www.adb.org" },
-      { title: "World Bank - Tajikistan Overview", url: "https://www.worldbank.org" }
-    ]
+  // Demo translation - will be replaced with real translation API
+  const getLanguageLabel = (lang: SourceLanguage) => {
+    const labels = {
+      english: "English",
+      russian: "Russian",
+      chinese: "Chinese"
+    };
+    return labels[lang];
   };
 
   const handleToggleMic = () => {
     if (!isListening) {
-      toast.info("Voice input will be enabled with Lovable Cloud");
+      toast.info("Voice input will be enabled with backend integration");
     }
     setIsListening(!isListening);
   };
 
-  const handleAsk = () => {
+  const handleTranslate = () => {
     if (!inputText.trim()) {
-      toast.error("Please ask a question");
+      toast.error("Please enter text to translate");
       return;
     }
 
-    setCurrentQuestion(inputText);
-    setHasAsked(true);
+    // Demo translation - will be replaced with real API
+    const demoTranslations: Record<SourceLanguage, string> = {
+      english: `Тарчумаи матн аз забони англисӣ: "${inputText}"`,
+      russian: `Тарчумаи матн аз забони русӣ: "${inputText}"`,
+      chinese: `Тарчумаи матн аз забони хитоӣ: "${inputText}"`
+    };
+
+    const translation = {
+      sourceText: inputText,
+      translatedText: demoTranslations[sourceLanguage],
+      sourceLanguage: getLanguageLabel(sourceLanguage)
+    };
+
+    setCurrentTranslation(translation);
+    setHasTranslated(true);
     
-    // Add to journey
-    const newNode = {
+    // Add to history
+    const newItem = {
       id: Date.now().toString(),
-      question: inputText,
+      ...translation,
+      timestamp: Date.now(),
       isActive: true
     };
     
-    setJourneyNodes(prev => [
+    setTranslationHistory(prev => [
       ...prev.map(n => ({ ...n, isActive: false })),
-      newNode
+      newItem
     ]);
     
     // Clear input
     setInputText("");
     
-    toast.success("Answer generated! Scroll to explore layers of understanding.");
+    toast.success("Translation complete!");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleAsk();
+      handleTranslate();
     }
   };
 
-  const handleNodeClick = (id: string) => {
-    setJourneyNodes(prev => prev.map(n => ({ ...n, isActive: n.id === id })));
-    toast.info("Returning to this question...");
+  const handleHistoryClick = (id: string) => {
+    const item = translationHistory.find(t => t.id === id);
+    if (item) {
+      setCurrentTranslation({
+        sourceText: item.sourceText,
+        translatedText: item.translatedText,
+        sourceLanguage: item.sourceLanguage
+      });
+      setTranslationHistory(prev => prev.map(n => ({ ...n, isActive: n.id === id })));
+      toast.info("Viewing previous translation");
+    }
   };
 
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Hero Background */}
-      {!hasAsked && (
+      {!hasTranslated && (
         <div 
           className="fixed inset-0 z-0 transition-opacity duration-1000"
           style={{
@@ -112,10 +124,10 @@ const Index = () => {
       )}
 
       {/* Content */}
-      <div className={`relative z-10 ${hasAsked ? "bg-background" : ""}`}>
+      <div className={`relative z-10 ${hasTranslated ? "bg-background" : ""}`}>
         <div className="container max-w-4xl mx-auto px-6 py-12 min-h-screen flex flex-col">
           
-          {!hasAsked ? (
+          {!hasTranslated ? (
             // Opening Experience
             <div className="flex-1 flex flex-col items-center justify-center space-y-12 text-center stagger-children">
               {/* Logo / Brand */}
@@ -124,22 +136,28 @@ const Index = () => {
                   Дониш
                 </h1>
                 <p className="text-xl text-primary-foreground/80 font-light">
-                  Ҳар савол - як саёҳат
+                  Тарчумон - Your Language Bridge
                 </p>
                 <p className="text-sm text-primary-foreground/60 mt-2">
-                  Every question is a journey
+                  English • Russian • Chinese → Tajik
                 </p>
               </div>
 
               {/* Main Question */}
               <div className="space-y-6">
                 <h2 className="text-question text-primary-foreground drop-shadow-lg">
-                  Дар бораи чӣ фикр мекунед?
+                  Чӣ тарчума кунем?
                 </h2>
                 <p className="text-lg text-primary-foreground/70">
-                  What's on your mind?
+                  What would you like to translate?
                 </p>
               </div>
+
+              {/* Language Selector */}
+              <LanguageSelector
+                selected={sourceLanguage}
+                onSelect={setSourceLanguage}
+              />
 
               {/* Microphone */}
               <div className="flex flex-col items-center gap-6">
@@ -149,100 +167,83 @@ const Index = () => {
                   onToggle={handleToggleMic}
                 />
                 <p className="text-sm text-primary-foreground/60">
-                  {isListening ? "Listening..." : "Tap to speak"}
+                  {isListening ? "Гап занед... (Speak)" : "Барои гап задан пахш кунед (Tap to speak)"}
                 </p>
               </div>
 
-              {/* Text Input Alternative */}
+              {/* Text Input */}
               <div className="w-full max-w-2xl">
-                <div className="flex gap-3">
-                  <Input
+                <div className="flex flex-col gap-3">
+                  <Textarea
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Or type your question..."
-                    className="bg-card/80 backdrop-blur-sm border-2 border-primary/20 focus:border-accent text-lg h-14 shadow-lg"
+                    placeholder="Or type to translate... / Ё барои тарчума нависед..."
+                    className="bg-card/80 backdrop-blur-sm border-2 border-primary/20 focus:border-accent text-lg min-h-[120px] shadow-lg resize-none"
                   />
                   <Button
-                    onClick={handleAsk}
+                    onClick={handleTranslate}
                     size="lg"
-                    className="bg-gradient-to-br from-accent to-secondary hover:scale-105 transition-transform shadow-lg h-14 px-8"
+                    className="bg-gradient-to-br from-accent to-secondary hover:scale-105 transition-transform shadow-lg h-14"
                   >
-                    <Send className="w-5 h-5" />
+                    <Send className="w-5 h-5 mr-2" />
+                    Translate / Тарчума кунед
                   </Button>
                 </div>
               </div>
-
-              {/* Personality Selector */}
-              <div className="space-y-4">
-                <p className="text-sm text-primary-foreground/70">
-                  Choose your guide:
-                </p>
-                <PersonalitySelector
-                  selected={personality}
-                  onSelect={setPersonality}
-                />
-              </div>
             </div>
           ) : (
-            // Answer View
+            // Translation View
             <div className="space-y-8 py-8">
-              {/* Header with Question */}
+              {/* Header */}
               <div className="space-y-6">
                 <div>
                   <h1 className="text-3xl font-bold gradient-text mb-2">
-                    Дониш
+                    Дониш - Тарчумон
                   </h1>
                   <p className="text-sm text-muted-foreground">
-                    Knowledge Discovery
+                    Your Language Bridge to Tajik
                   </p>
                 </div>
 
-                <Card className="p-6 bg-gradient-to-br from-muted/50 to-card shadow-lg">
-                  <div className="text-sm font-medium text-muted-foreground mb-2">
-                    Your Question:
-                  </div>
-                  <h2 className="text-2xl font-bold text-primary">
-                    {currentQuestion}
-                  </h2>
-                </Card>
-
-                <PersonalitySelector
-                  selected={personality}
-                  onSelect={setPersonality}
+                <LanguageSelector
+                  selected={sourceLanguage}
+                  onSelect={setSourceLanguage}
                 />
               </div>
 
-              {/* Progressive Answer */}
-              <ProgressiveAnswer
-                levels={demoAnswer.levels}
-                sources={demoAnswer.sources}
+              {/* Translation Result */}
+              <TranslationResult
+                sourceText={currentTranslation.sourceText}
+                translatedText={currentTranslation.translatedText}
+                sourceLanguage={currentTranslation.sourceLanguage}
               />
 
-              {/* Knowledge Journey */}
-              {journeyNodes.length > 0 && (
-                <KnowledgeJourney
-                  nodes={journeyNodes}
-                  onNodeClick={handleNodeClick}
+              {/* Translation History */}
+              {translationHistory.length > 0 && (
+                <TranslationHistory
+                  items={translationHistory}
+                  onItemClick={handleHistoryClick}
                 />
               )}
 
-              {/* Ask Another Question */}
+              {/* Translate Another */}
               <Card className="p-6 bg-gradient-to-br from-primary/5 to-accent/5 shadow-lg">
-                <div className="flex gap-3">
-                  <Input
+                <div className="flex flex-col gap-3">
+                  <Textarea
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask another question..."
-                    className="text-lg h-12"
+                    placeholder="Translate another text... / Матни дигареро тарчума кунед..."
+                    className="text-lg min-h-[100px] resize-none"
                   />
                   <Button
-                    onClick={handleAsk}
+                    onClick={handleTranslate}
                     size="lg"
-                    className="bg-gradient-to-br from-primary to-primary-glow hover:scale-105 transition-transform h-12 px-8"
+                    className="bg-gradient-to-br from-primary to-primary-glow hover:scale-105 transition-transform h-12"
                   >
-                    <Send className="w-5 h-5" />
+                    <Send className="w-5 h-5 mr-2" />
+                    Translate / Тарчума
                   </Button>
                 </div>
               </Card>
