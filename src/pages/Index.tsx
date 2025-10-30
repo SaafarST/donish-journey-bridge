@@ -209,14 +209,14 @@ const Index = () => {
                   onToggle={handleToggleMic}
                 />
                 <div className="text-center space-y-2">
-                  <p className="text-lg font-semibold text-foreground">
+                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
                     {isListening ? "🎤 Listening..." : "Tap to Speak"}
                   </p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-base text-gray-800 dark:text-gray-200">
                     {isListening ? "Гап занед, мо мешунавем" : "Гап занед ва мо тарчума мекунем"}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    Speech → Text → Translation → Voice
+                  <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
+                    Speech → Text → Translation → 🔊 Voice
                   </p>
                 </div>
               </div>
@@ -224,7 +224,7 @@ const Index = () => {
               {/* Text Input Alternative */}
               <div className="w-full max-w-2xl">
                 <div className="text-center mb-3">
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-base font-medium text-gray-800 dark:text-gray-200">
                     💬 Or type your message
                   </p>
                 </div>
