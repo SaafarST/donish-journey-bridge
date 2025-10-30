@@ -30,10 +30,12 @@ export const TranslationResult = ({
   };
 
   const handleSpeak = () => {
-    // Text-to-speech will be implemented with backend
+    // Text-to-speech simulation
     setIsPlaying(true);
-    toast.info("Text-to-speech will be available with backend integration");
-    setTimeout(() => setIsPlaying(false), 1000);
+    toast.success("🔊 Listening to Tajik translation...", {
+      description: "Voice output coming soon!"
+    });
+    setTimeout(() => setIsPlaying(false), 2000);
   };
 
   return (
@@ -65,35 +67,41 @@ export const TranslationResult = ({
           </p>
           
           {/* Action Buttons */}
-          <div className="flex gap-2 pt-2">
+          <div className="space-y-3 pt-4">
             <Button
               onClick={handleSpeak}
-              variant="outline"
+              variant={isPlaying ? "default" : "secondary"}
               size="lg"
               disabled={isPlaying}
-              className="flex-1"
+              className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg"
             >
-              <Volume2 className={`w-5 h-5 mr-2 ${isPlaying ? 'animate-pulse' : ''}`} />
-              Listen
+              <Volume2 className={`w-6 h-6 mr-3 ${isPlaying ? 'animate-pulse' : ''}`} />
+              <div className="flex flex-col items-start">
+                <span className="font-semibold">🔊 Listen in Tajik</span>
+                <span className="text-xs opacity-90">Шунидани тарчума</span>
+              </div>
             </Button>
-            <Button
-              onClick={handleCopy}
-              variant={copied ? "default" : "outline"}
-              size="lg"
-              className="flex-1"
-            >
-              {copied ? (
-                <>
-                  <CheckCircle2 className="w-5 h-5 mr-2" />
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <Copy className="w-5 h-5 mr-2" />
-                  Copy
-                </>
-              )}
-            </Button>
+            
+            <div className="flex gap-2">
+              <Button
+                onClick={handleCopy}
+                variant={copied ? "default" : "outline"}
+                size="lg"
+                className="flex-1"
+              >
+                {copied ? (
+                  <>
+                    <CheckCircle2 className="w-5 h-5 mr-2" />
+                    Copied!
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-5 h-5 mr-2" />
+                    Copy Text
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

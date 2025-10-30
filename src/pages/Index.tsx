@@ -6,7 +6,7 @@ import { TranslationResult } from "@/components/TranslationResult";
 import { TranslationHistory } from "@/components/TranslationHistory";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { toast } from "sonner";
 import pamirHero from "@/assets/pamir-hero.jpg";
 
@@ -140,8 +140,21 @@ const Index = () => {
                 <p className="text-xl text-primary-foreground/80 font-light">
                   Тарчумон - Your Language Bridge
                 </p>
-                <p className="text-sm text-primary-foreground/60 mt-2">
-                  English • Spanish • Russian • Chinese → Tajik
+                <div className="flex items-center justify-center gap-4 mt-3 text-sm text-primary-foreground/80">
+                  <span className="flex items-center gap-1">
+                    🎤 Speech
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    💬 Text
+                  </span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    🔊 Voice
+                  </span>
+                </div>
+                <p className="text-xs text-primary-foreground/60 mt-2">
+                  EN • ES • RU • CN → 🇹🇯 Tajik
                 </p>
               </div>
 
@@ -161,6 +174,33 @@ const Index = () => {
                 onSelect={setSourceLanguage}
               />
 
+              {/* Speech Features Banner */}
+              <Card className="bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-green-500/10 border-2 border-primary/30">
+                <CardContent className="pt-6 pb-6">
+                  <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-center">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span className="text-2xl">🎤</span>
+                      </div>
+                      <div className="text-left">
+                        <p className="font-semibold text-primary-foreground">Speak to Translate</p>
+                        <p className="text-xs text-primary-foreground/70">Гуфтан → Матн</p>
+                      </div>
+                    </div>
+                    <div className="text-3xl text-primary-foreground/60">→</div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                        <span className="text-2xl">🔊</span>
+                      </div>
+                      <div className="text-left">
+                        <p className="font-semibold text-primary-foreground">Listen in Tajik</p>
+                        <p className="text-xs text-primary-foreground/70">Шунидан ба тоҷикӣ</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Microphone */}
               <div className="flex flex-col items-center gap-6">
                 <MicrophoneInput
@@ -168,19 +208,32 @@ const Index = () => {
                   isListening={isListening}
                   onToggle={handleToggleMic}
                 />
-                <p className="text-sm text-primary-foreground/60">
-                  {isListening ? "Гап занед... (Speak)" : "Барои гап задан пахш кунед (Tap to speak)"}
-                </p>
+                <div className="text-center space-y-2">
+                  <p className="text-lg font-semibold text-primary-foreground">
+                    {isListening ? "🎤 Listening..." : "Tap to Speak"}
+                  </p>
+                  <p className="text-sm text-primary-foreground/70">
+                    {isListening ? "Гап занед, мо мешунавем" : "Гап занед ва мо тарчума мекунем"}
+                  </p>
+                  <p className="text-xs text-primary-foreground/60">
+                    Speech → Text → Translation → Voice
+                  </p>
+                </div>
               </div>
 
-              {/* Text Input */}
+              {/* Text Input Alternative */}
               <div className="w-full max-w-2xl">
+                <div className="text-center mb-3">
+                  <p className="text-sm text-primary-foreground/70">
+                    💬 Or type your message
+                  </p>
+                </div>
                 <div className="flex flex-col gap-3">
                   <Textarea
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Or type to translate... / Ё барои тарчума нависед..."
+                    placeholder="Type in any language... / Бо ягон забон нависед..."
                     className="bg-card/80 backdrop-blur-sm border-2 border-primary/20 focus:border-accent text-lg min-h-[120px] shadow-lg resize-none"
                   />
                   <Button
