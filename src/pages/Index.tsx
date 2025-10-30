@@ -175,7 +175,7 @@ const Index = () => {
               />
 
               {/* Speech Features Banner */}
-              <Card className="bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-green-500/10 border-2 border-primary/30">
+              <Card className="bg-gradient-to-r from-purple-100 via-blue-100 to-green-100 dark:from-purple-500/10 dark:via-blue-500/10 dark:to-green-500/10 border-2 border-primary/30">
                 <CardContent className="pt-6 pb-6">
                   <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-center">
                     <div className="flex items-center gap-3">
@@ -183,18 +183,18 @@ const Index = () => {
                         <span className="text-2xl">🎤</span>
                       </div>
                       <div className="text-left">
-                        <p className="font-semibold text-primary-foreground">Speak to Translate</p>
-                        <p className="text-xs text-primary-foreground/70">Гуфтан → Матн</p>
+                        <p className="font-semibold text-gray-900 dark:text-white">Speak to Translate</p>
+                        <p className="text-xs text-gray-700 dark:text-gray-300">Гуфтан → Матн</p>
                       </div>
                     </div>
-                    <div className="text-3xl text-primary-foreground/60">→</div>
+                    <div className="text-3xl text-gray-600 dark:text-gray-400">→</div>
                     <div className="flex items-center gap-3">
                       <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
                         <span className="text-2xl">🔊</span>
                       </div>
                       <div className="text-left">
-                        <p className="font-semibold text-primary-foreground">Listen in Tajik</p>
-                        <p className="text-xs text-primary-foreground/70">Шунидан ба тоҷикӣ</p>
+                        <p className="font-semibold text-gray-900 dark:text-white">Listen in Tajik</p>
+                        <p className="text-xs text-gray-700 dark:text-gray-300">Шунидани тарчума</p>
                       </div>
                     </div>
                   </div>
@@ -209,13 +209,13 @@ const Index = () => {
                   onToggle={handleToggleMic}
                 />
                 <div className="text-center space-y-2">
-                  <p className="text-lg font-semibold text-primary-foreground">
+                  <p className="text-lg font-semibold text-foreground">
                     {isListening ? "🎤 Listening..." : "Tap to Speak"}
                   </p>
-                  <p className="text-sm text-primary-foreground/70">
+                  <p className="text-sm text-muted-foreground">
                     {isListening ? "Гап занед, мо мешунавем" : "Гап занед ва мо тарчума мекунем"}
                   </p>
-                  <p className="text-xs text-primary-foreground/60">
+                  <p className="text-xs text-muted-foreground">
                     Speech → Text → Translation → Voice
                   </p>
                 </div>
@@ -224,7 +224,7 @@ const Index = () => {
               {/* Text Input Alternative */}
               <div className="w-full max-w-2xl">
                 <div className="text-center mb-3">
-                  <p className="text-sm text-primary-foreground/70">
+                  <p className="text-sm text-muted-foreground">
                     💬 Or type your message
                   </p>
                 </div>
