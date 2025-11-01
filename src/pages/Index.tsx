@@ -152,7 +152,7 @@ const Index = () => {
                   Дониш
                 </h1>
                 <p className="text-xl text-primary-foreground/80 font-light">
-                  Тарчумон - Your Language Bridge
+                  Тарҷумон - Your Language Bridge
                 </p>
                 <div className="flex items-center justify-center gap-4 mt-3 text-sm text-primary-foreground/80">
                   <span className="flex items-center gap-1">
@@ -175,7 +175,7 @@ const Index = () => {
               {/* Main Question */}
               <div className="space-y-6">
                 <h2 className="text-question text-primary-foreground drop-shadow-lg">
-                  Чӣ тарчума кунем?
+                  Чӣ тарҷума кунем?
                 </h2>
                 <p className="text-lg text-primary-foreground/70">
                   What would you like to translate?
@@ -208,7 +208,7 @@ const Index = () => {
                       </div>
                       <div className="text-left">
                         <p className="font-semibold text-gray-900 dark:text-white">Listen in Tajik</p>
-                        <p className="text-xs text-gray-700 dark:text-gray-300">Шунидани тарчума</p>
+                        <p className="text-xs text-gray-700 dark:text-gray-300">Шунидани тарҷума</p>
                       </div>
                     </div>
                   </div>
@@ -227,7 +227,7 @@ const Index = () => {
                     {isListening ? "🎤 Listening..." : "Tap to Speak"}
                   </p>
                   <p className="text-base text-gray-800 dark:text-gray-200">
-                    {isListening ? "Гап занед, мо мешунавем" : "Гап занед ва мо тарчума мекунем"}
+                    {isListening ? "Гап занед, мо мешунавем" : "Гап занед ва мо тарҷума мекунем"}
                   </p>
                   <p className="text-sm text-gray-700 dark:text-gray-300 font-medium">
                     Speech → Text → Translation → 🔊 Voice
@@ -256,7 +256,7 @@ const Index = () => {
                     className="bg-gradient-to-br from-accent to-secondary hover:scale-105 transition-transform shadow-lg h-14"
                   >
                     <Send className="w-5 h-5 mr-2" />
-                    Translate / Тарчума кунед
+                    Translate / Тарҷума кунед
                   </Button>
                 </div>
               </div>
@@ -268,7 +268,7 @@ const Index = () => {
               <div className="space-y-6">
                 <div>
                   <h1 className="text-3xl font-bold gradient-text mb-2">
-                    Дониш - Тарчумон
+                    Дониш - Тарҷумон
                   </h1>
                   <p className="text-sm text-muted-foreground">
                     Your Language Bridge to Tajik
@@ -303,7 +303,7 @@ const Index = () => {
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Translate another text... / Матни дигареро тарчума кунед..."
+                    placeholder="Translate another text... / Матни дигареро тарҷума кунед..."
                     className="text-lg min-h-[100px] resize-none"
                   />
                   <Button
@@ -312,7 +312,7 @@ const Index = () => {
                     className="bg-gradient-to-br from-primary to-primary-glow hover:scale-105 transition-transform h-12"
                   >
                     <Send className="w-5 h-5 mr-2" />
-                    Translate / Тарчума
+                    Translate / Тарҷума
                   </Button>
                 </div>
               </Card>
