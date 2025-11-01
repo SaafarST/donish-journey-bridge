@@ -1,0 +1,28 @@
+# Core dependencies
+fastapi[all]
+uvicorn
+python-dotenv
+
+# ML/AI
+torch>=2.4.0  # Updated from 2.1.0
+transformers>=4.46.0  # Updated from 4.35.0
+mlx-lm
+mlx-whisper
+accelerate
+
+# Pipecat (latest as of Oct 31, 2025)
+pipecat-ai[openai,deepgram,silero,mlx-whisper]  # Removed version pin, will get latest
+
+# Audio processing
+aiortc
+vosk
+scipy
+
+# Modal deployment
+modal
+
+# HTTP client
+aiohttp
+
+# Logging
+loguru
