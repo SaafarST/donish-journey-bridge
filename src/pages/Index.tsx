@@ -47,46 +47,60 @@ const Index = () => {
     setIsListening(!isListening);
   };
 
-  const handleTranslate = () => {
+  const handleTranslate = async () => {
     if (!inputText.trim()) {
       toast.error("Please enter text to translate");
       return;
     }
-
-    // Demo translation - will be replaced with real API
-    const demoTranslations: Record<SourceLanguage, string> = {
-      english: `Тарчумаи матн аз забони англисӣ: "${inputText}"`,
-      spanish: `Тарчумаи матн аз забони испанӣ: "${inputText}"`,
-      russian: `Тарчумаи матн аз забони русӣ: "${inputText}"`,
-      chinese: `Тарчумаи матн аз забони хитоӣ: "${inputText}"`
-    };
-
-    const translation = {
-      sourceText: inputText,
-      translatedText: demoTranslations[sourceLanguage],
-      sourceLanguage: getLanguageLabel(sourceLanguage)
-    };
-
-    setCurrentTranslation(translation);
-    setHasTranslated(true);
-    
-    // Add to history
-    const newItem = {
-      id: Date.now().toString(),
-      ...translation,
-      timestamp: Date.now(),
-      isActive: true
-    };
-    
-    setTranslationHistory(prev => [
-      ...prev.map(n => ({ ...n, isActive: false })),
-      newItem
-    ]);
-    
-    // Clear input
-    setInputText("");
-    
-    toast.success("Translation complete!");
+  
+    toast.info("Translating...");
+  
+    try {
+      // Call backend API
+      const response = await fetch('http://localhost:7860/api/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: inputText })
+      });
+  
+      const data = await response.json();
+      
+      if (data.error) {
+        toast.error("Translation failed: " + data.error);
+        return;
+      }
+  
+      const translation = {
+        sourceText: inputText,
+        translatedText: data.translation,
+        sourceLanguage: getLanguageLabel(sourceLanguage)
+      };
+  
+      setCurrentTranslation(translation);
+      setHasTranslated(true);
+      
+      // Add to history
+      const newItem = {
+        id: Date.now().toString(),
+        ...translation,
+        timestamp: Date.now(),
+        isActive: true
+      };
+      
+      setTranslationHistory(prev => [
+        ...prev.map(n => ({ ...n, isActive: false })),
+        newItem
+      ]);
+      
+      setInputText("");
+      toast.success("Translation complete!");
+      
+    } catch (error) {
+      toast.error("Failed to connect to translation service");
+      console.error(error);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

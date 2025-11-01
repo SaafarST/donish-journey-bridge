@@ -400,6 +400,44 @@ async def run_bot(webrtc_connection):
     runner = PipelineRunner(handle_sigint=False)
     await runner.run(task)
 
+# ✅ TEXT-ONLY TRANSLATION ENDPOINT
+@app.post("/api/translate")
+async def translate_text(request: dict):
+    """Simple text translation endpoint"""
+    try:
+        text = request.get("text", "")
+        if not text:
+            return {"error": "No text provided"}
+        
+        # Call LM Studio
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                "http://10.85.58.171:1234/v1/chat/completions",
+                json={
+                    "model": "ameena_qwen3-8b",
+                    "messages": [
+                        {"role": "system", "content": TRANSLATOR_SYSTEM_PROMPT},
+                        {"role": "user", "content": text}
+                    ],
+                    "max_tokens": 150,
+                    "temperature": 0.05,
+                    "top_p": 0.85
+                },
+                timeout=aiohttp.ClientTimeout(total=30)
+            ) as response:
+                result = await response.json()
+                translation = result["choices"][0]["message"]["content"]
+                cleaned = clean_translation_output(translation)
+                
+                return {
+                    "translation": cleaned,
+                    "original": text
+                }
+                
+    except Exception as e:
+        logger.error(f"Translation error: {e}")
+        return {"error": str(e)}
 
 @app.post("/api/offer")
 async def offer(request: dict, background_tasks: BackgroundTasks):
